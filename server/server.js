@@ -9,7 +9,7 @@ const http = require('http');
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:8080"
+        origin: "http://20.62.2.105"
     }
 });
 const activeRooms = {};
