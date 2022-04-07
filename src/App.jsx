@@ -15,7 +15,16 @@ function App() {
     const roomname = document.querySelector('#roomname').value;
     if (roomname == '') return;
     clientSocket.on('connect', () => {
-      clientSocket.emit('newgame', roomname);
+      clientSocket.emit('newgame', roomname, (response) => {
+        console.log(response);
+        if (response == 'gamefull') {
+          loadGame(4);
+          setTimeout(() => location.reload(), 1000);
+          return;
+        } else {
+          loadGame(1);
+        }
+      });
     })
     clientSocket.on('fullgame', (response) => {
       clientSocket.players = response.filter((ele) => ele !== clientSocket.id);
@@ -36,16 +45,21 @@ function App() {
 
     clientSocket.roomname = roomname;
     clientSocket.open();
-    loadGame(1);
   }
 
   const initial = (
     <div className="startpage">
       <input type="text" id="roomname" placeholder="Room Name"></input>
-      <button onClick={() => start()}>Start Game!</button>
+      <button onClick={() => start()}>Click here<br />to start!</button>
     </div>
   )
-  
+
+  const tooLate = (
+    <div className="waiting">
+      Room full.
+    </div>
+  )
+
   const waiting = (
     <div className="waiting">
       Waiting for others...
@@ -79,6 +93,10 @@ function App() {
     final = gameOver;
     // console.log(gameResult);
   }
+  if (gameLoaded == 4) {
+    final = tooLate;
+  }
+
   const wrapper = (
     <div className="wrapper">
       <div className="header">

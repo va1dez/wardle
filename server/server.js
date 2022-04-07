@@ -29,21 +29,30 @@ io.on('connection', (socket) => {
     console.log('A user connected!');
     console.log(socket.id);
     
-    socket.on('newgame', async (roomname) => {
+    socket.on('newgame', async (roomname, gameFull) => {
         // if (Object.prototype.hasOwnProperty.call(activeRooms, roomname)) {
         //     socket.emit('')
         // }
+        if (activeRooms[roomname]) {
+            gameFull('gamefull');
+            socket.removeAllListeners('disconnect');
+            console.log('Disconnecting', socket.id), 'because', roomname, 'is full.';
+            socket.disconnect();
+            return;
+        }
         gameLogic.createSession(roomname);
         socket.join(roomname);
         socket.gameRoom = roomname;
         const users = await io.in(roomname).fetchSockets();
-        if (users.length == 2) {
+        if (users.length == 4) {
             // if (Object.prototype.hasOwnProperty.call(activeRooms, roomname)) {
             //     io.to(socket.id)
             // }
+            activeRooms[roomname] = true;
             const listID = [];
             for (let user of users) {
                 listID.push(user.id);
+                gameLogic.addPlayer(roomname, user.id);
             }
             io.to(roomname).emit('fullgame', listID);
         }
@@ -54,8 +63,8 @@ io.on('connection', (socket) => {
         cb(result);
         console.log(roomname);
         if (result !== 'notaword' && result.every((ele) => ele === 'G')) {
-            io.emit('gameover', socket.id, word);
-            console.log('Gameover:', roomname);
+            io.to(roomname).emit('gameover', socket.id, word);
+            socket.removeAllListeners('disconnect');
             gameLogic.deleteSession(roomname);
         }
     })
@@ -68,6 +77,7 @@ io.on('connection', (socket) => {
         console.log('A user disconnected');
         const quitGame = new Array(30).fill('box out');
         io.to(socket.gameRoom).emit('redraw', quitGame, socket.id);
+        gameLogic.deletePlayer(socket.gameRoom, socket.id)
     })
 })
 

@@ -1,7 +1,7 @@
 {
   "scripts": {
     "build": "webpack --mode production",
-    "start": "webpack-dev-server --mode development"
+    "start": "webpack-dev-server --mode development & node server/server.js"
   },
   "dependencies": {
     "@svgr/webpack": "^6.2.1",

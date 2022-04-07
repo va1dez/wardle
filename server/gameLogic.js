@@ -10,19 +10,33 @@ gameLogic.createSession = function (name, id) {
 }
 
 gameLogic.deleteSession = function (name) {
-  console.log('Deleting ', name);
+  console.log('Deleting', name + '...');
   delete activeSessions[name];
-  console.log(name, ' deleted!');
+  console.log(name, 'deleted!');
+}
+
+gameLogic.addPlayer = function (room, player) {
+  activeSessions[room].players[player] = true;
 }
 
 gameLogic.test = function (name, entry) {
   return activeSessions[name].testWord(entry);
 }
 
+gameLogic.deletePlayer = function (room, player) {
+  delete activeSessions[room].players[player];
+  if (Object.keys(activeSessions[room].players).length === 0) {
+    gameLogic.deleteSession(room);
+  }
+}
+
+gameLogic.getSession = function (room) {
+  return activeSessions[room].players;
+}
 class WardleSession {
   constructor() {
     this.word = WORDS[Math.floor(Math.random() * WORDS.length)];
-    this.players = [];
+    this.players = {};
     console.log(this.word);
   }
 
