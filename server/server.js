@@ -17,7 +17,7 @@ app.get('/', (req, res) => {
     res.status(200).send('<p>Under construction</p>');
 })
 
-app.use(express.static(path.resolve(DIST_DIR, '../dist')));
+app.use('/wardle', express.static(path.resolve(DIST_DIR, '../dist')));
 
 // app.get('/wordle', (req, res) => {
 //     res.send(gameLogic.test('therooms', req.body.guess));
