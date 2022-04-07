@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
     socket.on('checkword', (roomname, word, cb) => {
         const result = gameLogic.test(roomname, word);
         cb(result);
-        if (result.every((ele) => ele === 'G')) {
+        if (result !== 'notaword' && result.every((ele) => ele === 'G')) {
             io.to(roomname).emit('gameover', socket.id);
         }
     })
