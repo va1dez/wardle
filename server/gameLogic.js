@@ -9,6 +9,12 @@ gameLogic.createSession = function (name, id) {
   activeSessions[name] = new WardleSession();
 }
 
+gameLogic.deleteSession = function (name) {
+  console.log('Deleting ', name);
+  delete activeSessions[name];
+  console.log(name, ' deleted!');
+}
+
 gameLogic.test = function (name, entry) {
   return activeSessions[name].testWord(entry);
 }
