@@ -16,7 +16,6 @@ function App() {
     if (roomname == '') return;
     clientSocket.on('connect', () => {
       clientSocket.emit('newgame', roomname, (response) => {
-        console.log(response);
         if (response == 'gamefull') {
           loadGame(4);
           setTimeout(() => location.reload(), 1000);

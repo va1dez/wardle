@@ -24,9 +24,11 @@ gameLogic.test = function (name, entry) {
 }
 
 gameLogic.deletePlayer = function (room, player) {
-  delete activeSessions[room].players[player];
-  if (Object.keys(activeSessions[room].players).length === 0) {
-    gameLogic.deleteSession(room);
+  if (activeSessions[room]) {
+    delete activeSessions[room].players[player];
+    if (Object.keys(activeSessions[room].players).length === 0) {
+      gameLogic.deleteSession(room);
+    }
   }
 }
 
