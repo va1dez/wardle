@@ -19,9 +19,6 @@ function PlayerFour(props) {
   const playerID = props.socket;
 
   clientSocket.on('redraw', (style, id) => {
-    console.log('ClientSocket: ', clientSocket.id);
-    console.log('Passed ID: ', id);
-    console.log('Props ID: ', props.socket);
     if (id === playerID) {
       const update = {...board, style};
       setLetters(update);

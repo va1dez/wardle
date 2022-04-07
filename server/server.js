@@ -9,7 +9,7 @@ const http = require('http');
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: "http://20.62.2.105"
+        origin: "http://localhost:3000/"
     }
 });
 const activeRooms = {};
@@ -30,11 +30,17 @@ io.on('connection', (socket) => {
     console.log(socket.id);
     
     socket.on('newgame', async (roomname) => {
+        // if (Object.prototype.hasOwnProperty.call(activeRooms, roomname)) {
+        //     socket.emit('')
+        // }
         gameLogic.createSession(roomname);
         socket.join(roomname);
         socket.gameRoom = roomname;
         const users = await io.in(roomname).fetchSockets();
-        if (users.length === 4) {
+        if (users == 2) {
+            // if (Object.prototype.hasOwnProperty.call(activeRooms, roomname)) {
+            //     io.to(socket.id)
+            // }
             const listID = [];
             for (let user of users) {
                 listID.push(user.id);
@@ -46,9 +52,11 @@ io.on('connection', (socket) => {
     socket.on('checkword', (roomname, word, cb) => {
         const result = gameLogic.test(roomname, word);
         cb(result);
-        console.log(result);
+        console.log(roomname);
         if (result !== 'notaword' && result.every((ele) => ele === 'G')) {
-            io.to(roomname).emit('gameover', socket.id);
+            io.emit('gameover', socket.id, word);
+            console.log('Gameover:', roomname);
+            gameLogic.deleteSession(roomname);
         }
     })
 
@@ -64,7 +72,7 @@ io.on('connection', (socket) => {
 })
 
 
-const PORT = 80;
+const PORT = 3000;
 
 server.listen(PORT, () => {
     console.log(`App listening to ${PORT}....`);

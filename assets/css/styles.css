@@ -14,7 +14,6 @@
 }
 
 #root {
-  padding: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,6 +23,7 @@ body {
   padding: 0;
   margin: 0;
   background-color: #222222;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 .container {
@@ -31,7 +31,9 @@ body {
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(5, 1fr);
   grid-gap: 5px;
-  margin-left: 3em;
+  margin-left: 1.5em;
+  margin-right: 1.5em;
+  height: 100%;
 }
 
 .row {
@@ -62,4 +64,75 @@ body {
 .out {
   border-color: #404040;
   background-color: #404040;
+}
+
+.startpage input {
+  height: 2em;
+  width: 12em;
+}
+
+.startpage button {
+  padding: 20px;
+  font-size: 1.5em;
+  font-weight: bolder;
+}
+.gameoverscreen {
+  color: white;
+  font-size: 1.5em;
+}
+.startpage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.startpage input {
+  margin-bottom: 15px;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.waiting {
+  color: white;
+  font-size: 2em;
+}
+
+.header {
+  align-self: stretch;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 2em;
+  color: white;
+  font-size: 2em;
+  border-bottom: solid white;
+  border-width: 2px;
+  margin-bottom: 0.5em;
+}
+
+@keyframes shake {
+  0% { transform : translate(10px); }
+  50% { transform : translate(-10px); }
+  100% { transform : translate(10px); }
+}
+
+.wrongword {
+  animation: shake 150ms;
+  animation-iteration-count: 5;
+}
+
+.p1container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.losertext {
+  color: red;
+  margin-top: 1em;
+  font-size: 2em;
 }

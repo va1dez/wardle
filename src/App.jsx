@@ -4,38 +4,57 @@ import PlayerOne from './PlayerOne';
 import PlayerThree from './PlayerThree';
 import PlayerFour from './PlayerFour';
 import clientSocket from './clientSocket';
+import GameOver from './GameOver';
+
+const gameResult = [];
 
 function App() {
   const [gameLoaded, loadGame] = useState(0);
-  let winner;
-  let ownID;
 
   function start() {
     const roomname = document.querySelector('#roomname').value;
+    if (roomname == '') return;
     clientSocket.on('connect', () => {
       clientSocket.emit('newgame', roomname);
     })
     clientSocket.on('fullgame', (response) => {
       clientSocket.players = response.filter((ele) => ele !== clientSocket.id);
-      console.log(clientSocket.players);
-      console.log(clientSocket.id);
+      clientSocket.roomname = roomname;
       loadGame(2);
     })
+    clientSocket.on('gameover', async (winID, theWord) => {
+      let winner = 'lost';
+      if (clientSocket.id == winID) {
+        winner = 'won';
+      }
+      gameResult.push(winner);
+      gameResult.push(theWord);
+      // console.log(gameResult);
+      clientSocket.disconnect();
+      loadGame(3);
+    })
+
     clientSocket.roomname = roomname;
     clientSocket.open();
     loadGame(1);
   }
 
   const initial = (
-    <div>
-      <input type="text" id="roomname"></input><br />
-      <button onClick={() => start()}>Click me!</button>
+    <div className="startpage">
+      <input type="text" id="roomname" placeholder="Room Name"></input>
+      <button onClick={() => start()}>Start Game!</button>
     </div>
   )
   
   const waiting = (
     <div className="waiting">
       Waiting for others...
+    </div>
+  )
+  
+  const gameOver = (
+    <div className="gameoverscreen">
+      <GameOver winner={gameResult[0]} word={gameResult[1]} />
     </div>
   )
 
@@ -47,13 +66,6 @@ function App() {
       <PlayerFour socket={clientSocket.players[2]}/>
     </div>
   )
-  
-  const gameOver = (
-    <div className="gameoverscreen">
-
-    </div>
-  )
-
 
   let final = initial;
 
@@ -63,8 +75,19 @@ function App() {
   if (gameLoaded == 2) {
     final = gameStart;
   }
-
-  return final;
+  if (gameLoaded == 3) {
+    final = gameOver;
+    // console.log(gameResult);
+  }
+  const wrapper = (
+    <div className="wrapper">
+      <div className="header">
+        WAR-dle
+      </div>
+      {final}
+    </div>
+  )
+  return wrapper;
 }
 
 export default App;

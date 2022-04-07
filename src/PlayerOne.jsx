@@ -39,6 +39,13 @@ function PlayerOne() {
           const demoOutput = reply;
 
           if (demoOutput === 'notaword') {
+            let query = '.--' + board.currRow;
+            document.querySelectorAll(query).forEach((sq) => {
+              sq.classList.add('wrongword');
+              setTimeout(() => {
+                sq.classList.remove('wrongword')
+              }, 1000);
+            });
             return;
           }
   
@@ -58,7 +65,7 @@ function PlayerOne() {
           setLetters(newBoard);
           clientSocket.emit('update', clientSocket.roomname, changes.style);
           if (demoOutput.every((ele) => ele === 'G')) {
-            console.log('You won!');
+            // console.log('You won!');
           }
           return;
         })
@@ -91,9 +98,17 @@ function PlayerOne() {
   }
 
   useEffect(() => {
-    
+    if (board.currRow > 5) {
+      const loser = document.createElement('div');
+      loser.classList.add('losertext');
+      const text = document.createTextNode('Out of attempts!');
+      loser.appendChild(text);
+      document.querySelector('.p1container').appendChild(loser);
+      return;
+    };
+
     document.addEventListener('keydown', newLetter);
-    console.log(clientSocket.connected);
+    // console.log(clientSocket.connected);
 
     return () => {
       document.removeEventListener('keydown', newLetter);
@@ -108,14 +123,17 @@ function PlayerOne() {
     const row = Math.floor(i/5);
     const sq = i%5;
     const value = (board[row][sq]) ? (board[row][sq]) : '';
-    const style = (board.style[i]) ? (board.style[i]) : 'box';
+    let style = (board.style[i]) ? (board.style[i]) : 'box';
+    style += ' --' + row;
 
-    squareArray[i] = <Square key={sqKey} text={value} boxStyle={style} />
+    squareArray[i] = <Square key={sqKey} text={value} boxStyle={style} row={row} />
   }
 
   const element = (
-    <div className="container">
-      {squareArray}
+    <div className="p1container">
+      <div className="container player">
+        {squareArray}
+      </div>
     </div>
   )
 
