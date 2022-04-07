@@ -12,7 +12,7 @@ const activeRooms = {};
 
 app.use(express.json());
 
-app.get((req, res) => {
+app.get('/', (req, res) => {
     console.log('hit!');
     res.status(200).send('<p>Under construction</p>');
 })
