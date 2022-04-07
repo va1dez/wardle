@@ -1,6 +1,6 @@
 import io from 'socket.io-client';
 
-const clientSocket = io('http://localhost:3000', {
+const clientSocket = io({
   autoConnect: false,
 });
 
