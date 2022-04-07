@@ -7,11 +7,7 @@ const DIST_DIR = __dirname;
 const HTML_FILE = path.join(DIST_DIR, 'index.html');
 const http = require('http');
 const server = http.createServer(app);
-const io = new Server(server, {
-    cors: {
-        origin: "http://20.62.2.105"
-    }
-});
+const io = new Server(server);
 const activeRooms = {};
 
 app.use(express.json());
@@ -23,6 +19,7 @@ app.use(express.static(path.resolve(DIST_DIR, '../dist')));
 app.get('/', (req, res) => {
     res.status(200).send('Under construction');
 })
+
 app.get('/wardle', (req, res) => {
     res.sendFile(path.resolve(DIST_DIR, '../dist/index.html'));
 });
