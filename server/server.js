@@ -23,12 +23,11 @@ app.get('/', (req, res) => {
 //     res.send(gameLogic.test('therooms', req.body.guess));
 // })
 
+app.use(express.static(path.resolve(DIST_DIR, '../dist')));
 
 app.get('/wardle', (req, res) => {
     res.sendFile(path.resolve(DIST_DIR, '../dist/index.html'));
 });
-
-app.use('/wardle', express.static(path.resolve(DIST_DIR, '../dist')));
 
 io.on('connection', (socket) => {
     console.log('A user connected!');
