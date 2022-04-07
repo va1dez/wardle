@@ -12,12 +12,12 @@ const activeRooms = {};
 
 app.use(express.json());
 
-app.get('/', (req, res) => {
+app.get((req, res) => {
     console.log('hit!');
     res.status(200).send('<p>Under construction</p>');
 })
 
-app.use('/wardle', express.static(path.resolve(DIST_DIR, '../dist')));
+
 
 // app.get('/wordle', (req, res) => {
 //     res.send(gameLogic.test('therooms', req.body.guess));
@@ -27,6 +27,8 @@ app.use('/wardle', express.static(path.resolve(DIST_DIR, '../dist')));
 app.get('/wardle', (req, res) => {
     res.sendFile(path.resolve(DIST_DIR, '../dist/index.html'));
 });
+
+app.use('/wardle', express.static(path.resolve(DIST_DIR, '../dist')));
 
 io.on('connection', (socket) => {
     console.log('A user connected!');
