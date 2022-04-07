@@ -11,15 +11,18 @@ const io = new Server(server);
 const activeRooms = {};
 
 app.use(express.json());
+
+app.get('/', (req, res) => {
+    console.log('hit!');
+    res.status(200).send('<p>Under construction</p>');
+})
+
 app.use(express.static(path.resolve(DIST_DIR, '../dist')));
 
 // app.get('/wordle', (req, res) => {
 //     res.send(gameLogic.test('therooms', req.body.guess));
 // })
-app.get('/', (req, res) => {
-    console.log('hit!');
-    res.status(200).send('<p>Under construction</p>');
-})
+
 
 app.get('/wardle', (req, res) => {
     res.sendFile(path.resolve(DIST_DIR, '../dist/index.html'));
