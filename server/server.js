@@ -39,6 +39,8 @@ io.on('connection', (socket) => {
             console.log('Disconnecting', socket.id), 'because', roomname, 'is full.';
             socket.disconnect();
             return;
+        } else {
+            gameFull('ok');
         }
         gameLogic.createSession(roomname);
         socket.join(roomname);
@@ -66,6 +68,7 @@ io.on('connection', (socket) => {
             io.to(roomname).emit('gameover', socket.id, word);
             socket.removeAllListeners('disconnect');
             gameLogic.deleteSession(roomname);
+            delete activeRooms[roomname];
         }
     })
 
