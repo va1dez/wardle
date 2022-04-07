@@ -34,7 +34,6 @@ io.on('connection', (socket) => {
         socket.join(roomname);
         socket.gameRoom = roomname;
         const users = await io.in(roomname).fetchSockets();
-        console.log(users.length);
         if (users.length === 4) {
             const listID = [];
             for (let user of users) {
