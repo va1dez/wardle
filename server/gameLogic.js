@@ -1,5 +1,6 @@
 const req = require('express/lib/request');
 const WORDS = require('./wordlist');
+const DICT = require('./wordlist-check');
 const activeSessions = {};
 
 const gameLogic = {};
@@ -43,7 +44,7 @@ class WardleSession {
   }
 
   testWord = function (entry) {
-    if (!WORDS.includes(entry.join('').toLowerCase())) return 'notaword';
+    if (!DICT.includes(entry.join('').toLowerCase())) return 'notaword';
     const testWord = this.word.split('');
     const result = new Array(5);
 
