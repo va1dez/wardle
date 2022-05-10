@@ -2,6 +2,7 @@ import React, { Component, useState, useEffect } from 'react';
 import Square from './square';
 import clientSocket from './clientSocket';
 import keyLogic from './keyboardLogic.js';
+import Keyboard from './Keyboard';
 
 const initBoard = {
   currRow: 0,
@@ -14,8 +15,38 @@ const initBoard = {
   style: []
 };
 
+const initKeyboard = {
+  A : '',
+  B : '',
+  C : '',
+  D : '',
+  E : '',
+  F : '',
+  G : '',
+  H : '',
+  I : '',
+  J : '',
+  K : '',
+  L : '',
+  M : '',
+  N : '',
+  O : '',
+  P : '',
+  Q : '',
+  R : '',
+  S : '',
+  T : '',
+  U : '',
+  V : '',
+  W : '',
+  X : '',
+  Y : '',
+  Z : '',
+}
+
 function PlayerOne() {
   const [ board, setLetters ] = useState(initBoard);
+  const [ letterState, setLetterState ] = useState(initKeyboard);
   
   function newLetter(letter) {
     let row = board.currRow;
@@ -48,21 +79,30 @@ function PlayerOne() {
             });
             return;
           }
-  
+          
+          console.log(demoOutput);
+          let newState = {};
           const newStyle = demoOutput.map((ele, index) => {
             if (ele == 'G') {
+              newState[newRow[index]] = ' green';
+              // setLetterState({...letterState, newRow[index] : ' green'});
               return 'box green';
             } if (ele == 'C') {
+              newState[newRow[index]] = ' yellow';
+              // setLetterState({...letterState, newRow[index] : ' yellow'});
               return 'box yellow';
             } if (ele == 'X') {
+              newState[newRow[index]] = ' dark';
+              // setLetterState({...letterState, newRow[index] : ' dark'});
               return 'box dark';
             }
           });
-
+          Object.assign(letterState, newState);
           changes.style = board.style.concat(newStyle);
           changes.currRow = row + 1;
           const newBoard = {...board, ...changes};
           setLetters(newBoard);
+          setLetterState({...letterState, newState});
           clientSocket.emit('update', clientSocket.roomname, changes.style);
           if (demoOutput.every((ele) => ele === 'G')) {
             // console.log('You won!');
@@ -133,6 +173,9 @@ function PlayerOne() {
     <div className="p1container">
       <div className="container player">
         {squareArray}
+      </div>
+      <div>
+        <Keyboard letterState={letterState} />
       </div>
     </div>
   )

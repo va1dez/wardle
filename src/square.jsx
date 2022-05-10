@@ -10,4 +10,4 @@ function Square(props) {
   return element;
 }
 
-export default Square;
+export default React.memo(Square);

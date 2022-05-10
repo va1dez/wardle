@@ -72,7 +72,7 @@ module.exports = function(_env, argv) {
         )
       }),
         new HtmlWebpackPlugin({
-          template: path.resolve(__dirname, "public/index.html"),
+          template: path.resolve(__dirname, "assets/html/index.html"),
           inject: true
       })
     ].filter(Boolean),
