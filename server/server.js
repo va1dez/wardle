@@ -50,7 +50,7 @@ io.on('connection', (socket) => {
         socket.join(roomname);
         socket.gameRoom = roomname;
         const users = await io.in(roomname).fetchSockets();
-        if (users) {
+        if (users.length === 4) {
             // if (Object.prototype.hasOwnProperty.call(activeRooms, roomname)) {
             //     io.to(socket.id)
             // }
