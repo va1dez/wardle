@@ -389,6 +389,7 @@ const dict = [
   'bundu',
   'dweeb',
   'pupas',
+  'pupal',
   'prude',
   'alter',
   'nyaff',

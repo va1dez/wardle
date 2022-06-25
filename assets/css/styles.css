@@ -99,6 +99,7 @@ body {
 .waiting {
   color: white;
   font-size: 2em;
+  text-align: center;
 }
 
 .header {
@@ -157,4 +158,10 @@ body {
   margin-top: 10px;
   border-width: 2px;
   padding: 5px;
+}
+
+.newgame button {
+  width: 20em;
+  height: 10em;
+  font-size: 1em;
 }

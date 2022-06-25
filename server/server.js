@@ -33,7 +33,7 @@ io.on('connection', (socket) => {
     console.log('A user connected!');
     console.log(socket.id);
     
-    socket.on('newgame', async (roomname, gameFull) => {
+    socket.on('newgame', async (roomname, numPlayers, gameFull) => {
         // if (Object.prototype.hasOwnProperty.call(activeRooms, roomname)) {
         //     socket.emit('')
         // }
@@ -46,11 +46,12 @@ io.on('connection', (socket) => {
         } else {
             gameFull('ok');
         }
-        gameLogic.createSession(roomname);
+        gameLogic.createSession(roomname, numPlayers);
         socket.join(roomname);
         socket.gameRoom = roomname;
+        const totalUsers = gameLogic.activeSessions[roomname].playerCount;
         const users = await io.in(roomname).fetchSockets();
-        if (users.length === 4) {
+        if (users.length === totalUsers) {
             // if (Object.prototype.hasOwnProperty.call(activeRooms, roomname)) {
             //     io.to(socket.id)
             // }

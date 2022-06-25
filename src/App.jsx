@@ -7,15 +7,19 @@ import clientSocket from './clientSocket';
 import GameOver from './GameOver';
 
 const gameResult = [];
+let room = 'RQDS';
 
 function App() {
   const [gameLoaded, loadGame] = useState(0);
 
   function start() {
-    const roomname = document.querySelector('#roomname').value;
+    // const roomname = document.querySelector('#roomname').value;
+    room = 'RQDS';
+    const roomname = room;
+    const numPlayers = 1;
     if (roomname == '') return;
     clientSocket.on('connect', () => {
-      clientSocket.emit('newgame', roomname, (response) => {
+      clientSocket.emit('newgame', roomname, numPlayers, (response) => {
         if (response == 'gamefull') {
           loadGame(4);
           setTimeout(() => location.reload(), 1000);
@@ -46,12 +50,21 @@ function App() {
     clientSocket.open();
   }
 
+  // const initial = (
+  //   <div className="startpage">
+  //     <input type="text" id="roomname" placeholder="Room Name"></input>
+  //     <button onClick={() => start()}>Click here<br />to start!</button>
+  //   </div>
+  // )
+
   const initial = (
-    <div className="startpage">
-      <input type="text" id="roomname" placeholder="Room Name"></input>
-      <button onClick={() => start()}>Click here<br />to start!</button>
+    <div className="newgame">
+      <button type="button" onClick={() => start()}><h3>Start New Game</h3>Generate a code and share with your friends!</button><br /><br />
+      <button type="button"><h3>Join Existing Game</h3>Join a game with an existing code!</button><br />
     </div>
   )
+
+  // props = > start();
 
   const tooLate = (
     <div className="waiting">
@@ -61,7 +74,8 @@ function App() {
 
   const waiting = (
     <div className="waiting">
-      Waiting for others...
+      Share this code to play with friends!<br />
+      <h1>{room}</h1>
     </div>
   )
   
@@ -74,9 +88,9 @@ function App() {
   const gameStart = (
     <div className="maincontainer">
       <PlayerOne />
-      <PlayerTwo socket={clientSocket.players[0]}/>
+      {/* <PlayerTwo socket={clientSocket.players[0]}/>
       <PlayerThree socket={clientSocket.players[1]}/>
-      <PlayerFour socket={clientSocket.players[2]}/>
+      <PlayerFour socket={clientSocket.players[2]}/> */}
     </div>
   )
 
