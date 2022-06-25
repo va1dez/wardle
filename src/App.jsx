@@ -7,7 +7,7 @@ import clientSocket from './clientSocket';
 import GameOver from './GameOver';
 
 const gameResult = [];
-let room = 'RQDS';
+let room = '';
 
 function App() {
   const [gameLoaded, loadGame] = useState(0);
@@ -16,7 +16,7 @@ function App() {
     // const roomname = document.querySelector('#roomname').value;
     room = 'RQDS';
     const roomname = room;
-    const numPlayers = 1;
+    let numPlayers = 2;
     if (roomname == '') return;
     clientSocket.on('connect', () => {
       clientSocket.emit('newgame', roomname, numPlayers, (response) => {
@@ -59,11 +59,16 @@ function App() {
 
   const initial = (
     <div className="newgame">
-      <button type="button" onClick={() => start()}><h3>Start New Game</h3>Generate a code and share with your friends!</button><br /><br />
-      <button type="button"><h3>Join Existing Game</h3>Join a game with an existing code!</button><br />
+      <button type="button" onClick={() => start()}><h3>Start New Game</h3>Generate a code and share with your friends!</button>
+      <div className="numplayers">
+        <h2>Number of players:</h2><input type="number" min="1" max="4" defaultValue={1}></input>
+      </div>
+      <h1>OR</h1>
+      <button type="button"><h3>Join Existing Game</h3>Join a game with an existing code!</button>
+      <input type="text"></input>
     </div>
   )
-
+  
   // props = > start();
 
   const tooLate = (
@@ -88,9 +93,9 @@ function App() {
   const gameStart = (
     <div className="maincontainer">
       <PlayerOne />
-      {/* <PlayerTwo socket={clientSocket.players[0]}/>
-      <PlayerThree socket={clientSocket.players[1]}/>
-      <PlayerFour socket={clientSocket.players[2]}/> */}
+      <PlayerTwo socket={clientSocket.players[0]}/>
+      <PlayerTwo socket={clientSocket.players[1]}/>
+      <PlayerTwo socket={clientSocket.players[2]}/>
     </div>
   )
 

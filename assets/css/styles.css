@@ -164,4 +164,33 @@ body {
   width: 20em;
   height: 10em;
   font-size: 1em;
+  margin-bottom: 0.5em;
+  margin-top: 0.5em;
+}
+
+.newgame input {
+  text-align: center;
+  width: 3em;
+  font-size: 4em;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.newgame {
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.numplayers {
+  display: flex;
+  align-items: center;
+}
+
+.numplayers input {
+  margin-left: 1em;
+  width: 3em;
+  font-size: 1em;
+  height: 2em;
 }

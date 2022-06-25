@@ -10,14 +10,19 @@ const server = http.createServer(app);
 const io = new Server(server);
 const activeRooms = {};
 
+/**
+ * TO DO
+ * Compare wordlist-check with wordlist for discrepancies to resolve bug where
+ * word in wordlist is not in wordlist-check, causing unwinnable game
+ */
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
-    console.log('hit!');
-    res.status(200).send('<p>Under construction</p>');
-})
+    res.status(200).sendFile(path.resolve(DIST_DIR, '../../../personalsite/personal-site/index.html'));
+});
 
-
+app.use('/', express.static(path.resolve(DIST_DIR, '../../../personalsite/personal-site')));
 
 // app.get('/wordle', (req, res) => {
 //     res.send(gameLogic.test('therooms', req.body.guess));

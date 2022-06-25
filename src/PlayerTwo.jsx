@@ -14,9 +14,12 @@ const initBoard = {
 };
 
 function PlayerTwo(props) {
+  if (props.socket === undefined) return;
   const [ board, setLetters ] = useState(initBoard);
   const squareArray = new Array(30);
   const playerID = props.socket;
+
+  console.log(playerID, props);
 
   clientSocket.on('redraw', (style, id) => {
     if (id === playerID) {
